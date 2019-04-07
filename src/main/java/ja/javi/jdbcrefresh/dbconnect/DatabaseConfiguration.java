@@ -57,7 +57,7 @@ public class DatabaseConfiguration {
 		return credentials;
 	}
 
-	public String getHostame() {
+	public String getHostname() {
 		return credentials.get("hostname");
 	}
 
