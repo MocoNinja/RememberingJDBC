@@ -26,6 +26,7 @@ public class MySQLConnection implements DBConnection {
 		try {
 			connection = DriverManager.getConnection(connectionString, configuration.getUser(),
 					configuration.getPassword());
+			connection.setAutoCommit(connection.getAutoCommit());
 		} catch (SQLException e) {
 			System.err.println("Error creating connection to database");
 		}

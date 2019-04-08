@@ -40,6 +40,7 @@ public class DatabaseConfiguration {
 		credentials.put("database", prop.getProperty("database"));
 		credentials.put("username", prop.getProperty("username"));
 		credentials.put("password", prop.getProperty("password"));
+		credentials.put("autocommit", prop.getProperty("autocommit"));
 	}
 
 	public void readCredentials() {
@@ -75,5 +76,9 @@ public class DatabaseConfiguration {
 
 	public String getPassword() {
 		return credentials.get("password");
+	}
+	
+	public boolean hasAutocommit() {
+		return credentials.get("autocommit").trim().toLowerCase().equals("true");
 	}
 }
