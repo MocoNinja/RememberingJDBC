@@ -1,30 +1,26 @@
 package ja.javi.jdbcrefresh.models;
 
-import java.util.Date;
-
 public class Teacher {
-	private Long id_student;
+	private Long id_teacher;
 	private String name;
 	private String surname;
-	private Date birthdate;
 
 	public Teacher() {
 
 	}
 
-	public Teacher(Long id_student, String name, String surname, Date birthdate) {
-		this.id_student = id_student;
+	public Teacher(Long id_student, String name, String surname) {
+		this.id_teacher = id_student;
 		this.name = name;
 		this.surname = surname;
-		this.birthdate = birthdate;
 	}
 
 	public Long getId_student() {
-		return id_student;
+		return id_teacher;
 	}
 
 	public void setId_student(Long id_student) {
-		this.id_student = id_student;
+		this.id_teacher = id_student;
 	}
 
 	public String getName() {
@@ -43,25 +39,15 @@ public class Teacher {
 		this.surname = surname;
 	}
 
-	public Date getBirthdate() {
-		return birthdate;
-	}
-
-	public void setBirthdate(Date birthdate) {
-		this.birthdate = birthdate;
-	}
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Teacher [id_student=");
-		builder.append(id_student);
+		builder.append("Teacher [id_teacher=");
+		builder.append(id_teacher);
 		builder.append(", name=");
 		builder.append(name);
 		builder.append(", surname=");
 		builder.append(surname);
-		builder.append(", birthdate=");
-		builder.append(birthdate);
 		builder.append("]");
 		return builder.toString();
 	}
@@ -70,8 +56,7 @@ public class Teacher {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((birthdate == null) ? 0 : birthdate.hashCode());
-		result = prime * result + ((id_student == null) ? 0 : id_student.hashCode());
+		result = prime * result + ((id_teacher == null) ? 0 : id_teacher.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((surname == null) ? 0 : surname.hashCode());
 		return result;
@@ -86,15 +71,10 @@ public class Teacher {
 		if (getClass() != obj.getClass())
 			return false;
 		Teacher other = (Teacher) obj;
-		if (birthdate == null) {
-			if (other.birthdate != null)
+		if (id_teacher == null) {
+			if (other.id_teacher != null)
 				return false;
-		} else if (!birthdate.equals(other.birthdate))
-			return false;
-		if (id_student == null) {
-			if (other.id_student != null)
-				return false;
-		} else if (!id_student.equals(other.id_student))
+		} else if (!id_teacher.equals(other.id_teacher))
 			return false;
 		if (name == null) {
 			if (other.name != null)
