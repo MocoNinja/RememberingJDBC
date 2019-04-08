@@ -35,9 +35,8 @@ CREATE TABLE subject (
 CREATE TABLE enrollment (
 	id_student INT NOT NULL,
 	id_subject INT NOT NULL,
-	year YEAR NOT NULL,
 	grade INT,
-	PRIMARY KEY (id_student, id_subject, year),
+	PRIMARY KEY (id_student, id_subject),
 	FOREIGN KEY id_student(id_student) REFERENCES student(id_student),
 	FOREIGN KEY id_subject(id_subject) REFERENCES subject(id_subject)
 );
@@ -55,7 +54,29 @@ INSERT INTO teacher VALUES
     (3,'Agustín','Domínguez');
 
 INSERT INTO subject VALUES
-    (6,'Fundamentos Tecnológicos',1),
-    (7,'Teoría de la Programación',2),
-    (8,'Bases de Datos',2),
-    (9,'Introducción a Algoritmos',3);
+    (1,'Fundamentos Tecnológicos',1),
+    (2,'Teoría de la Programación',2),
+    (3,'Bases de Datos',2),
+    (4,'Introducción a Algoritmos',3);
+
+INSERT INTO enrollment VALUES
+    (1, 1, 8),
+    (1, 2, 8),
+    (1, 3, 7),
+    (1, 4, 6),
+    (2, 1, 10),
+    (2, 2, 8),
+    (2, 3, 10),
+    (2, 4, 8),
+    (3, 1, 2),
+    (3, 2, 5),
+    (3, 3, 8),
+    (3, 4, 9),
+    (4, 1, 0),
+    (4, 2, 0),
+    (4, 3, 0),
+    (4, 4, 0),
+    (5, 1, 10),
+    (5, 2, 10),
+    (5, 3, 10),
+    (5, 4, 10);
