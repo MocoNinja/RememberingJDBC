@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class DatabaseConfiguration {
+public class PropertiesDatabaseConfiguration implements IDatabaseConfigurator {
 	private final Map<String, String> credentials = new HashMap<>();
-	private static final DatabaseConfiguration instance = new DatabaseConfiguration();
+	private static final PropertiesDatabaseConfiguration instance = new PropertiesDatabaseConfiguration();
 
-	private DatabaseConfiguration() {
+	private PropertiesDatabaseConfiguration() {
 		init();
 	}
 
@@ -47,7 +47,7 @@ public class DatabaseConfiguration {
 		}
 	}
 
-	public static DatabaseConfiguration getInstance() {
+	public static PropertiesDatabaseConfiguration getInstance() {
 		return instance;
 	}
 
