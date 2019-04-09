@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 public class MySQLConnection implements DBConnection {
 	private static final MySQLConnection instance = new MySQLConnection();
-	private final DatabaseConfiguration configuration = DatabaseConfiguration.getInstance();
+	private final IDatabaseConfigurator configuration = PropertiesDatabaseConfiguration.getInstance();
 	private final String connectionString;
 	private Connection connection;
 
