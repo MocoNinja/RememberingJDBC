@@ -5,15 +5,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
-public class MySQLConnection implements DBConnection {
-	private static final MySQLConnection instance = new MySQLConnection();
+public class MySQLConnection implements IDBConnection {
 	private final IDatabaseConfigurator configuration = PropertiesDatabaseConfiguration.getInstance();
 	private final String connectionString;
 	private Connection connection;
 
 	Logger logger = Logger.getLogger(getClass().getName());
 
-	private MySQLConnection() {
+	public MySQLConnection() {
 		this.connectionString = prepareConnectionString();
 	}
 
@@ -53,10 +52,6 @@ public class MySQLConnection implements DBConnection {
 				logger.severe("Error closing connection to database");
 			}
 		}
-	}
-
-	public static MySQLConnection getConnector() {
-		return instance;
 	}
 
 	public Connection getConnection() {

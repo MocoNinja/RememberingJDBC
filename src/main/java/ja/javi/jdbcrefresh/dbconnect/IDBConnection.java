@@ -1,6 +1,6 @@
 package ja.javi.jdbcrefresh.dbconnect;
 
-public interface DBConnection {
+public interface IDBConnection {
 	void close();
 
 	void open();

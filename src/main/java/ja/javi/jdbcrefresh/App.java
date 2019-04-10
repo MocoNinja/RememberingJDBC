@@ -5,7 +5,7 @@ import ja.javi.jdbcrefresh.dbconnect.MySQLConnection;
 public class App {
 	public static void main(String[] args) {
 		System.out.println("Hello, world!");
-		MySQLConnection.getConnector().open();
-		MySQLConnection.getConnector().close();
+		MySQLConnection conn = new MySQLConnection();
+		conn.open();
 	}
 }
