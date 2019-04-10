@@ -8,13 +8,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import ja.javi.jdbcrefresh.dbconnect.IDBConnection;
 import ja.javi.jdbcrefresh.dbconnect.MySQLConnection;
 import ja.javi.jdbcrefresh.models.Student;
 
 public class StudentDAOMySQL implements DAO<Student, Long> {
+	private final boolean debugMode = true; // This could be another parameter to read from configuration
 	private IDBConnection connection;
+	Logger logger = Logger.getLogger(getClass().getName());
 
 	public StudentDAOMySQL() {
 		connection = new MySQLConnection();
@@ -24,20 +27,23 @@ public class StudentDAOMySQL implements DAO<Student, Long> {
 	public Student getById(Long id) {
 		connection.open();
 		String query = "SELECT * FROM student WHERE id_student = ?";
+
 		Student student = null;
 		try {
 			PreparedStatement stm = connection.getConnection().prepareStatement(query);
 			stm.setLong(1, id);
+			logger.info("Query: " + query);
 			ResultSet rs = stm.executeQuery();
 			while (rs.next()) {
 				student = assembleFromResultSet(rs);
 			}
-			connection.commit();
 		} catch (SQLException e) {
-			connection.rollback();
 			e.printStackTrace();
 		} finally {
 			connection.close();
+		}
+		if (debugMode && student != null) {
+			logger.info("Student from database: " + student.toString());
 		}
 		return student;
 	}
@@ -49,17 +55,21 @@ public class StudentDAOMySQL implements DAO<Student, Long> {
 		List<Student> students = new ArrayList<>();
 		try {
 			PreparedStatement stm = connection.getConnection().prepareStatement(query);
+			logger.info("Query: " + query);
 			ResultSet rs = stm.executeQuery();
 			while (rs.next()) {
 				Student student = assembleFromResultSet(rs);
-				students.add(student);
+				if (student != null) {
+					students.add(student);
+				}
 			}
-			connection.commit();
 		} catch (SQLException e) {
-			connection.rollback();
 			e.printStackTrace();
 		} finally {
-			connection.close();
+		}
+		if (debugMode) {
+			logger.info("=== Students from database ===");
+			students.forEach(student -> logger.info(student.toString()));
 		}
 		return students;
 	}
@@ -82,11 +92,14 @@ public class StudentDAOMySQL implements DAO<Student, Long> {
 			creating.setSurname(surname);
 			creating.setId_student(id_student);
 			creating.setBirthdate(birthDate);
+			if (debugMode) {
+				logger.info("Student: " + creating.toString() + " could successfully be assembled from database...");
+			}
 		} catch (SQLException e) {
-			System.err.println("Error assembling user from result set");
+			logger.severe("Error assembling user from result set");
 			creating = null;
 		} catch (ParseException e) {
-			System.err.println("Error creating date...");
+			logger.severe("Error creating date...");
 			creating = null;
 		}
 		return creating;

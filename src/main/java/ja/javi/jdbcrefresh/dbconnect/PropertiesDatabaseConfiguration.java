@@ -5,10 +5,13 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class PropertiesDatabaseConfiguration implements IDatabaseConfigurator {
 	private final Map<String, String> credentials = new HashMap<>();
 	private static final PropertiesDatabaseConfiguration instance = new PropertiesDatabaseConfiguration();
+
+	Logger logger = Logger.getLogger(getClass().getName());
 
 	private PropertiesDatabaseConfiguration() {
 		init();
@@ -30,7 +33,7 @@ public class PropertiesDatabaseConfiguration implements IDatabaseConfigurator {
 			readConfig(prop);
 			inputStream.close();
 		} catch (IOException e) {
-			System.err.println("Error streaming file");
+			logger.severe("Properties file for database configuration could not be found!");
 		}
 	}
 
@@ -43,7 +46,7 @@ public class PropertiesDatabaseConfiguration implements IDatabaseConfigurator {
 	public void readCredentials() {
 		for (String key : credentials.keySet()) {
 			String msg = String.format("The key \"%s\" has a value of: \"%s\"", key, credentials.get(key));
-			System.out.println(msg);
+			logger.info("=== CREDENTIALS READ ===\n" + msg);
 		}
 	}
 

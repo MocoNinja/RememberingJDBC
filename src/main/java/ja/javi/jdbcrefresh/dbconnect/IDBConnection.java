@@ -5,11 +5,11 @@ import java.sql.Connection;
 public interface IDBConnection {
 	void close();
 
+	void commit();
+
 	void open();
 
-	Connection getConnection();
-	
-	void commit();
-	
 	void rollback();
+
+	Connection getConnection();
 }
