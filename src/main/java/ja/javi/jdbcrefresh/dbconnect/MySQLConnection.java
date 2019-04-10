@@ -54,8 +54,31 @@ public class MySQLConnection implements IDBConnection {
 		}
 	}
 
+	@Override
 	public Connection getConnection() {
 		return connection;
+	}
+
+	@Override
+	public void commit() {
+		if (!configuration.hasAutocommit()) {
+			try {
+				connection.commit();
+			} catch (SQLException e) {
+				logger.severe("Error when trying to commit changes");
+			}
+		}
+	}
+
+	@Override
+	public void rollback() {
+		if (!configuration.hasAutocommit()) {
+			try {
+				connection.rollback();
+			} catch (SQLException e) {
+				logger.severe("Error when trying to roll back changes");
+			}
+		}
 	}
 
 }
