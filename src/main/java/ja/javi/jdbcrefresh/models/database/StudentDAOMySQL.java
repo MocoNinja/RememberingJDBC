@@ -4,11 +4,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+
+import com.mysql.cj.result.SqlDateValueFactory;
 
 import ja.javi.jdbcrefresh.dbconnect.IDBConnection;
 import ja.javi.jdbcrefresh.dbconnect.MySQLConnection;
@@ -38,7 +39,7 @@ public class StudentDAOMySQL implements DAO<Student, Long> {
 				student = assembleFromResultSet(rs);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.severe("Exception when selecting student of id: " + id);
 		} finally {
 			connection.close();
 		}
@@ -64,8 +65,9 @@ public class StudentDAOMySQL implements DAO<Student, Long> {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.severe("Error retrieving student. Current amount of retrieved students is: " + students.size());
 		} finally {
+			connection.close();
 		}
 		if (debugMode) {
 			logger.info("=== Students from database ===");
@@ -74,23 +76,89 @@ public class StudentDAOMySQL implements DAO<Student, Long> {
 		return students;
 	}
 
-	
 	@Override
-	public void delete(Student t) {
-		// TODO Auto-generated method stub
-		
+	public void delete(Student student) {
+		connection.open();
+		String query = "DELETE FROM student WHERE id_student = ?";
+		logger.info("Deleting student: " + student.toString());
+		Long id = student.getId_student();
+		if (id == null) {
+			logger.severe("There was an error when retrieving the id of student: " + student.toString());
+		}
+		try {
+			PreparedStatement stm = connection.getConnection().prepareStatement(query);
+			stm.setLong(1, id);
+			logger.info("Query: " + query);
+			stm.executeUpdate();
+			connection.commit();
+		} catch (SQLException e) {
+			logger.severe("Exception when deleting Student: " + student.toString());
+			connection.rollback();
+		} finally {
+			connection.close();
+		}
+		if (debugMode) {
+			logger.info("Deleted student from database: " + student.toString());
+		}
 	}
 
 	@Override
-	public void insert(Student t) {
-		// TODO Auto-generated method stub
-		
+	public void insert(Student student) {
+		connection.open();
+		String query = "INSERT INTO student (name, surname, birthdate) VALUES (?, ?, ?)";
+		logger.info("Inserting student: " + student.toString());
+		try {
+			PreparedStatement stm = connection.getConnection().prepareStatement(query);
+			stm.setString(1, student.getName());
+			stm.setString(2, student.getSurname());
+			stm.setDate(3, new java.sql.Date(student.getBirthdate().getTime()));
+			logger.info("Query: " + query);
+			stm.executeUpdate();
+			connection.commit();
+		} catch (SQLException e) {
+			logger.severe("Exception when inserting Student: " + student.toString());
+			connection.rollback();
+		} finally {
+			connection.close();
+		}
+		if (debugMode) {
+			logger.info("Inserted student into database: " + student.toString());
+		}
 	}
 
 	@Override
-	public void update(Student t) {
-		// TODO Auto-generated method stub
-		
+	public void update(Student original, Student creating) {
+		connection.open();
+		Long id = original.getId_student();
+		String name = creating.getName();
+		String surname = creating.getSurname();
+		String birthdate = creating.getBirthDate();
+
+		if (id == null || name == null || surname == null || birthdate == null) {
+			logger.severe(
+					"ERROR retrieving fields when updating " + original.toString() + " to " + creating.toString());
+		}
+
+		String query = "UPDATE student SET name = ?, surname = ?, birthdate = ? WHERE id_student = ?";
+		logger.info("Updating student of id: " + id + " to:" + creating.toString());
+		try {
+			PreparedStatement stm = connection.getConnection().prepareStatement(query);
+			stm.setString(1, creating.getName());
+			stm.setString(2, creating.getSurname());
+			stm.setDate(3, new java.sql.Date(creating.getBirthdate().getTime()));
+			stm.setLong(4, id);
+			logger.info("Query: " + query);
+			stm.executeUpdate();
+			connection.commit();
+		} catch (SQLException e) {
+			logger.severe("Exception when updating Student: " + creating.toString());
+			connection.rollback();
+		} finally {
+			connection.close();
+		}
+		if (debugMode) {
+			logger.info("Updated student of id: " + id + " to:" + creating.toString());
+		}
 	}
 
 	/**
@@ -100,13 +168,12 @@ public class StudentDAOMySQL implements DAO<Student, Long> {
 	 */
 	public Student assembleFromResultSet(ResultSet rs) {
 		Student creating = new Student();
-		SimpleDateFormat df = new SimpleDateFormat("YYYY-MM-dd");
 		try {
 			Long id_student = rs.getLong("id_student");
 			String name = rs.getString("name");
 			String surname = rs.getString("surname");
 			String birthDateString = rs.getString("birthdate");
-			Date birthDate = df.parse(birthDateString);
+			Date birthDate = creating.getFormat().parse(birthDateString);
 			creating.setName(name);
 			creating.setSurname(surname);
 			creating.setId_student(id_student);

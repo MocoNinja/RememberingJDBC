@@ -13,7 +13,7 @@ CREATE TABLE student (
 	id_student INT NOT NULL AUTO_INCREMENT,
 	name VARCHAR(32) NOT NULL,
 	surname VARCHAR(64) NOT NULL,
-	birthdate DATE NOT NULL,
+	birthdate DATE NULL,
 	PRIMARY KEY id_student (id_student)
 );
 

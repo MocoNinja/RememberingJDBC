@@ -11,5 +11,5 @@ public interface DAO<T, k> {
 
 	void insert(T t);
 
-	void update(T t);
+	void update(T tOriginal, T tNew);
 }

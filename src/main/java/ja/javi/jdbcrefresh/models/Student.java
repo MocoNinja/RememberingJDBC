@@ -1,8 +1,14 @@
 package ja.javi.jdbcrefresh.models;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Logger;
 
 public class Student {
+	private static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	Logger logger = Logger.getLogger(getClass().getName());
+
 	private Long id_student;
 	private String name;
 	private String surname;
@@ -10,13 +16,6 @@ public class Student {
 
 	public Student() {
 
-	}
-
-	public Student(Long id_student, String name, String surname, Date birthdate) {
-		this.id_student = id_student;
-		this.name = name;
-		this.surname = surname;
-		this.birthdate = birthdate;
 	}
 
 	public Long getId_student() {
@@ -47,8 +46,24 @@ public class Student {
 		return birthdate;
 	}
 
+	public String getBirthDate() {
+		return format.format(birthdate);
+	}
+
 	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
+	}
+
+	public void setBirthDate(String string) {
+		try {
+			this.birthdate = format.parse(string);
+		} catch (ParseException e) {
+			logger.severe("Error parsing date: " + string);
+		}
+	}
+
+	public SimpleDateFormat getFormat() {
+		return format;
 	}
 
 	@Override
