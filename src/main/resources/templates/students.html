@@ -11,10 +11,11 @@
 	</header>
 	<section id="list">
 		<table>
-			<th:block th:each="user : ${studentList}">
+			<th:block th:each="student : ${studentList}">
 				<tr>
-					<td th:text="${user.name}">...</td>
-					<td th:text="${user.surname}">...</td>
+					<td th:text="${student.name}">...</td>
+					<td th:text="${student.surname}">...</td>
+					<td><a th:href="@{'/student/' + ${student.id_student}}">Details</a></td>
 				</tr>
 			</th:block>
 		</table>
