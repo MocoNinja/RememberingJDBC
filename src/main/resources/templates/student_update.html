@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register</title>
+</head>
+<body>
+	<header>
+		<h2>Register a new student</h2>
+	</header>
+	<section id="result">
+		<h3>This is student <span th:text="${student.name} + ' ' + ${student.surname}">Student</span></h3>
+		<p>Are you sure you want to remove it?</p>
+			<form method="POST" action="/student/update/" th:object="${student}">
+				<input name="id_student" type="text" th:field="${student.id_student}" hidden />
+				<input name="name" type="text" th:field="${student.name}"  />
+				<input name="surname" type="text" th:field="${student.surname}"  />
+				<input name="birthdate" type="date" th:field="${student.birthdate}"  />
+				<input type="submit" value="Update" />
+			</form>
+	</section>
+	<a href="/">Back</a>
+</body>
+</html>

@@ -22,12 +22,10 @@ echo "===== Building Docker image ====="
 APP_NAME="remember-jdbc"
 docker build -t "$APP_NAME" .
 
-TAG="$(git rev-parse --short HEAD)-$(date +%F-%T | tr ":" "-")"
+TAG="$(git rev-parse --short HEAD)-$(date +%F-%H | tr ":" "-")"
 
 docker tag $APP_NAME "moconinja/$APP_NAME:$TAG"
 
 echo "===== Stopping running containers (if any) and starting fresh container ====="
-
-docker ps -a | grep "$APP_NAME" | awk '{print $1}' | xargs docker rm -f
 
 docker run -d --network="host" "$APP_NAME"

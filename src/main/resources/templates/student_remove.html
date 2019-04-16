@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Students</title>
+</head>
+<body>
+	<header>
+		<h2>Students</h2>
+	</header>
+	<section id="result">
+		<h3>This is student <span th:text="${student.name} + ' ' + ${student.surname}">Student</span></h3>
+		<p>Are you sure you want to remove it?</p>
+			<form method="POST" action="/student/remove/" th:object="${student}">
+				<input name="id_student" type="text" th:field="${student.id_student}" hidden />
+				<input name="name" type="text" th:field="${student.name}" hidden />
+				<input name="surname" type="text" th:field="${student.surname}" hidden />
+				<input name="birthdate" type="date" th:field="${student.birthdate}" hidden />
+				<input type="submit" value="remove" />
+			</form>
+	</section>
+	<a href="/">Back</a>
+</body>
+</html>
