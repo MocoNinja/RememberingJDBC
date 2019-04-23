@@ -16,8 +16,14 @@ import ja.javi.jdbcrefresh.models.Student;
 public class StudentDAOMySQL implements DAO<Student, Long> {
 	private final boolean debugMode = true; // This could be another parameter to read from configuration
 	private IDBConnection connection;
+	
 	Logger logger = Logger.getLogger(getClass().getName());
 
+	
+	private final String INSERT_QUERY = "INSERT INTO student (name, surname, birthdate) VALUES (?, ?, ?)";
+	private final String GETONE_QUERY = "SELECT * FROM student WHERE id_student = ?";
+	private final String GETALL_QUERY = "SELECT * FROM student";
+	private final String DELETE_QUERY = "DELETE FROM student WHERE id_student = ?";
 	public StudentDAOMySQL() {
 		connection = new MySQLConnection();
 	}
@@ -25,13 +31,13 @@ public class StudentDAOMySQL implements DAO<Student, Long> {
 	@Override
 	public Student getById(Long id) {
 		connection.open();
-		String query = "SELECT * FROM student WHERE id_student = ?";
+		
 
 		Student student = null;
 		try {
-			PreparedStatement stm = connection.getConnection().prepareStatement(query);
+			PreparedStatement stm = connection.getConnection().prepareStatement(GETONE_QUERY);
 			stm.setLong(1, id);
-			logger.info("Query: " + query);
+			logger.info("Query: " + stm.toString());
 			ResultSet rs = stm.executeQuery();
 			while (rs.next()) {
 				student = assembleFromResultSet(rs);
@@ -50,11 +56,11 @@ public class StudentDAOMySQL implements DAO<Student, Long> {
 	@Override
 	public List<Student> getAll() {
 		connection.open();
-		String query = "SELECT * FROM student";
+		
 		List<Student> students = new ArrayList<>();
 		try {
-			PreparedStatement stm = connection.getConnection().prepareStatement(query);
-			logger.info("Query: " + query);
+			PreparedStatement stm = connection.getConnection().prepareStatement(GETALL_QUERY);
+			logger.info("Query: " + stm.toString());
 			ResultSet rs = stm.executeQuery();
 			while (rs.next()) {
 				Student student = assembleFromResultSet(rs);
@@ -77,16 +83,16 @@ public class StudentDAOMySQL implements DAO<Student, Long> {
 	@Override
 	public void delete(Student student) {
 		connection.open();
-		String query = "DELETE FROM student WHERE id_student = ?";
+		
 		logger.info("Deleting student: " + student.toString());
 		Long id = student.getId_student();
 		if (id == null) {
 			logger.severe("There was an error when retrieving the id of student: " + student.toString());
 		}
 		try {
-			PreparedStatement stm = connection.getConnection().prepareStatement(query);
+			PreparedStatement stm = connection.getConnection().prepareStatement(DELETE_QUERY);
 			stm.setLong(1, id);
-			logger.info("Query: " + query);
+			logger.info("Query: " + stm.toString());
 			stm.executeUpdate();
 			connection.commit();
 		} catch (SQLException e) {
@@ -103,14 +109,14 @@ public class StudentDAOMySQL implements DAO<Student, Long> {
 	@Override
 	public void insert(Student student) {
 		connection.open();
-		String query = "INSERT INTO student (name, surname, birthdate) VALUES (?, ?, ?)";
+		
 		logger.info("Inserting student: " + student.toString());
 		try {
-			PreparedStatement stm = connection.getConnection().prepareStatement(query);
+			PreparedStatement stm = connection.getConnection().prepareStatement(INSERT_QUERY);
 			stm.setString(1, student.getName());
 			stm.setString(2, student.getSurname());
 			stm.setDate(3, new java.sql.Date(student.getBirthdate().getTime()));
-			logger.info("Query: " + query);
+			logger.info("Query: " + stm.toString());
 			stm.executeUpdate();
 			connection.commit();
 		} catch (SQLException e) {
