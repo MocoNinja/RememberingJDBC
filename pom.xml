@@ -11,7 +11,7 @@
 	
 	<groupId>ja.javilearning</groupId>
 	<artifactId>simple-jdbc</artifactId>
-	<version>stable-SNAPSHOT</version>
+	<version>test-SNAPSHOT</version>
 	<properties>
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
