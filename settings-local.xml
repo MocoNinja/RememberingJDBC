@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+
+    <servers>
+        <server>
+            <id>maven-public-javitest</id>
+            <username>admin</username>
+            <password>admin</password>
+        </server>
+        <server>
+            <id>javitest-releases</id>
+            <username>admin</username>
+            <password>admin</password>
+        </server>
+        <server>
+            <id>javitest-snapshots</id>
+            <username>admin</username>
+            <password>admin</password>
+        </server>
+      
+    </servers>
+
+    <profiles>
+        <profile>
+            <id>maven-public</id>
+            <repositories>
+                <repository>
+                    <id>maven-public-javitest</id>
+                    <url>https://nexus-test-altemista-test.helix.everis.cloud/repository/maven-public-javitest/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>maven-public-javitest</id>
+                    <url>https://nexus-test-altemista-test.helix.everis.cloud/repository/maven-public-javitest/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+
+        <profile>
+            <id>javitest-releases</id>
+            <repositories>
+                <repository>
+                    <id>javitest-releases</id>
+                    <url>https://nexus-test-altemista-test.helix.everis.cloud/repository/javitest-releases/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+
+        <profile>
+            <id>javitest-snapshots</id>
+            <repositories>
+                <repository>
+                    <id>javitest-snapshots</id>
+                    <url>https://nexus-test-altemista-test.helix.everis.cloud/repository/javitest-snapshots/</url>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+
+    </profiles>
+
+    <activeProfiles>
+        <activeProfile>maven-public-javitest</activeProfile>
+        <activeProfile>javitest-releases</activeProfile>
+        <activeProfile>javitest-snapshots</activeProfile>
+    </activeProfiles>
+
+</settings>
