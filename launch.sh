@@ -1,3 +1,3 @@
-#!/bin/sh
+#!/bin/bash
 
-mvn clean deploy --setings "settings-local.xml"
+mvn clean deploy --settings "settings-local.xml"
